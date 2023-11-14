@@ -1,12 +1,19 @@
 # Kahoot Bot GPT
 
-## This is just a placeholder!!!! Do not follow the steps in this guide
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+This is a bot I created to automatically answer Kahoot questions faster than any person possibly could. It was coded in Python, and works by using [Selenium](https://www.selenium.dev/) for web automation in order to scrape the question and answer choices, and then select the correct answer. The (likely) correct answer is determined by feeding the question and answer choices into the [GPT-4 API](https://openai.com/gpt-4) which then outputs whatever it thinks is the most probable answer
 
-This is a text bot for imessage that was inspired by South Park's 'Deep Learning' episode. The program was made to continuously run so that it is constantly checking whether or not it needs to respond to a text message. If the specified number texts you, it will automatically feed the text message into OpenAI's ChatGPT API and come up with a response to the text. This text will then be sent to the phone number you specified. 
+## Demo:
 
-There are options to configure this program such as removing the 'Approval' required before sending automatically sending responses. I added many comments throughout the code in case you are curious about what is going on. Also, in the comments I make note of some changes in functionality you can make.
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/A3wYRQk4m9E?si=Swx_XEhpIIHhggbw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+# Drawbacks:
+
+- Sometimes GPT-4 is wrong. It isn't magic
+- Questions that are specific to something that wouldn't be a part of GPT-4's traning data will most likely be answered incorrectly. 
+- Currently for multiple choice questions only one option is selected
+	- This is under development and will hopefully be fixed soon
 
 This project is still heavily under development, so expect there to be updates and changes in the coming days.
 
@@ -18,65 +25,128 @@ If you like my work please consider donating:
 
 These are some basic instructions to help you get started.
 
+### Disclaimer
+
+Don't be a jerk who cheats in games where something is actually at stake. This code was made to learn about web automation, OpenAI's API, and to have fun. Using the software in casual games to earn bragging rights is one thing, but cheating isn't cool. 
+
+By choosing to use this code, you agree to do so at your own risk. I expressly disclaim any responsibility for its use or the consequences thereof. Your use of the code signifies your understanding of this disclaimer and your agreement to these terms. Play fair, and have fun!
+
 ### Prerequisites
 
 What you need to install:
 
-* [imessage-reader](https://pypi.org/project/imessage-reader/) - python lib for working with imessage
 * [OpenAI API](https://auth0.openai.com/u/signup/identifier?state=hKFo2SBDdGt4b2tMS2VHRzU4SXhNd1lZZHJxR0xsS0F5Wk53QqFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIE56aWJ3cWJ1NEZLb05HSHdoMnpBZzk5SVAwcGs4b2ZJo2NpZNkgRFJpdnNubTJNdTQyVDNLT3BxZHR3QjNOWXZpSFl6d0Q) - ChatGPT API
+* [Selenium](https://www.selenium.dev/) - Tool for automating web applications
 
-Follow this [link](https://www.alfredapp.com/help/troubleshooting/indexing/terminal-full-disk-access/) to enable full disk access for Terminal. This allows the program to access your chat.db in order to read and respond to text messages.
+You need to make an account through OpenAI, and obtain an API key in order to use the GPT models with this software; otherwise it won't work. You can follow the link above to setup an account
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+A step by step series of examples that tell you how to get everything up and running
 
 Install OpenAI API (After Obtaining an API key from the website)
 
-```
+```html
 pip install openai
 ```
 
-Install imessage-reader
+Install selenium
 
+```html
+pip install selenium
 ```
-pip install imessage-reader
+
+Paste your OpenAI API key in setup.py:
+
+```python
+user_key = "Paste your API Key HERE!"
+```
+
+In setup.py, you can also specify which model you'd like to use. (defaults to GPT-4)
+
+```python
+model_select = "gpt-4"
 ```
 
 ### Usage
-
-Before using the program, open the file 'config.py' and paste your OpenAI API key on the designated location (This never changes). Then paste the phone number you want to text with at the designated location (This you may change often depending on who you want to text). You also need to specify the path to the send_iMessage.scpt file that was downloaded (This is most likely located in the same directory as the other files you downloaded). For Example: script_path = "/Users/name/Desktop/text-bot-GPT/send_iMessage.scpt"
 
 To run the program simply open your Terminal and go to the directory in which the files are located.
 
 Then run:
 
+```html
+python3 start.py
 ```
-python3 text-bot-GPT.py
+
+This starts the program using your provided configuration. 
+
+When the program starts, you will be prompted to input the Kahoot Pin:
+
 ```
-This starts the program using your provided configuration. The program will say 'waiting' if you were the last to text in a conversation. Otherwise it will print out a person's text, print out ChatGPT's response, and await your approval before sending.
+Kahoot Pin: 
+```
+
+If will say the following if the login was successful:
+
+```
+Login successful
+```
+
+You will then be prompted to input a username (If it doesn't meet the [Kahoot Guidelines](https://support.kahoot.com/hc/en-us/articles/115002201267-How-to-handle-inappropriate-nicknames), then the program may fail):
+
+```
+Username?: 
+```
+
+If everything was successful, you'll see:
+
+```
+Bot created at XXXXXXX with username: 'Username'
+
+Waiting for next question...
+```
+
+### Answering Questions
+
+The program works by using [Selenium](https://www.selenium.dev/) to constantly scrape the website until it sees that a question is being asked. Upon seeing that something was asked, it will print the question and answer choices to the terminal. 
+
+Example Output:
+
+```
+Question: How long does it take for sunlight to reach the Earth?
+Possible Answers: 1. 8 minutes, 2. 1 minute, 3. 36 minutes, 4. 15 seconds
+```
+
+After outputting the question and answer choices, the program will send this data to the GPT model of your choice, and wait for its response. 
+
+After getting a response, it will click the answer that the GPT model selected, and print out the answer that was selected. 
+
+Example Output:
+
+```
+Clicked on 1
+```
 
 ## Built With
 
-* [imessage-reader](https://pypi.org/project/imessage-reader/) - python lib for working with imessage
 * [OpenAI API](https://auth0.openai.com/u/signup/identifier?state=hKFo2SBDdGt4b2tMS2VHRzU4SXhNd1lZZHJxR0xsS0F5Wk53QqFur3VuaXZlcnNhbC1sb2dpbqN0aWTZIE56aWJ3cWJ1NEZLb05HSHdoMnpBZzk5SVAwcGs4b2ZJo2NpZNkgRFJpdnNubTJNdTQyVDNLT3BxZHR3QjNOWXZpSFl6d0Q) - ChatGPT API
-* [AppleScript](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/introduction/ASLR_intro.html) - Used for sending iMessages
+* [Selenium](https://www.selenium.dev/) - Tool for automating web applications
+* [Python](https://www.python.org/) - Language of the gods
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/seaborg1/text-bot-GPT/blob/main/CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests to us. Follow the general guidelines outlined in the link. 
+Please read [CONTRIBUTING.md](https://github.com/seaborg1/kahoot-bot-gpt/blob/main/CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests to us. Follow the general guidelines outlined in the link. 
 
 ## Author
 
-**Franco (Seaborg1)** 
+**[Franco](https://franco-lopez.com/me) (Seaborg1)** 
 
 ## License
 
-This project is licensed under the GNU v.3 General Public License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/seaborg1/kahoot-bot-gpt/blob/main/LICENSE) file for details
 
 ## Acknowledgments
 
-* Shoutout to [niffitycode](https://pypi.org/user/niftycode/) - Author of imessage-reader
-* [OpenAI](https://openai.com/)
-* [South Park](https://southpark.cc.com/episodes/8byci4/south-park-deep-learning-season-26-ep-4) - For the inspiration
+- [Kahoot](https://kahoot.com/) -  Intense trivia where perceptions of intelligence are won and lost
+* [OpenAI](https://openai.com/) - If you're reading this article you know what [ChatGPT](https://chat.openai.com/) is
 * Shoutout to [PurpleBooth](https://gist.github.com/PurpleBooth) - for putting this README template together
