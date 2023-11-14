@@ -6,7 +6,7 @@ This is a bot I created to automatically answer Kahoot questions faster than any
 
 ## Demo:
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/A3wYRQk4m9E?si=Swx_XEhpIIHhggbw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://www.youtube.com/watch?v=A3wYRQk4m9E
 
 # Drawbacks:
 
