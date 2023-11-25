@@ -4,10 +4,6 @@
 
 This is a bot I created to automatically answer Kahoot questions faster than any person possibly could. It was coded in Python, and works by using [Selenium](https://www.selenium.dev/) for web automation in order to scrape the question and answer choices, and then select the correct answer. The (likely) correct answer is determined by feeding the question and answer choices into the [GPT-4 API](https://openai.com/gpt-4) which then outputs whatever it thinks is the most probable answer
 
-## Demo:
-
-https://www.youtube.com/watch?v=A3wYRQk4m9E
-
 # Drawbacks:
 
 - Sometimes GPT-4 is wrong. It isn't magic
